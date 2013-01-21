@@ -1,16 +1,18 @@
 var colorCatch = function() {
-	var g = {};
-	g.init = function() {
-		g.canvas = document.getElementById("myCanvas");
-    	g.ctx = g.canvas.getContext("2d");
+    
+    var canvas;
+    var ctx;
+
+    this.init = function() {
+		canvas = document.getElementById("myCanvas");
+    	ctx = canvas.getContext("2d");
+        drawBucket(200, 50);
 	}
 
-    g.drawBucket = function(x,y) {
-        g.ctx.fillRect(x, y, 50, 60);
+    function drawBucket(x,y) {
+        ctx.fillRect(x, y, 50, 60);
     }
-
-	g.init();
-	g.drawBucket(200, 50);
 }
 
-colorCatch();
+var colorCatchGame = new colorCatch();
+colorCatchGame.init();
