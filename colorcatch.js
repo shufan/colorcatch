@@ -2,6 +2,7 @@ var colorCatch = function() {
     /* Canvas Global Variables */
     var canvas;
     var ctx;
+    var intId;
 
     /* Game Global Variables */
     var g = {
@@ -9,14 +10,27 @@ var colorCatch = function() {
         bucketY: 250
     };
 
-    /* Initialize the Game */
+    /* Initialize the game */
     this.init = function() {
 		canvas = document.getElementById("myCanvas");
     	ctx = canvas.getContext("2d");
         canvas.style.cursor = "none";
+        // initial redraw
+        redraw();
+        intId = setInterval(redraw(), 100);
+        addEventListeners();
+    }
+
+    /* Redraw function on a set interval */
+    function redraw() {
         drawBackground();
         drawBucket(g.bucketX, g.bucketY);
-        addEventListeners();
+    }
+
+    /* Update game state at a set interval */
+    function update() {
+        // code to update position of all boxes/generate
+        // new boxes will be run here
     }
 
     function drawBucket(x, y) {
@@ -45,7 +59,7 @@ var colorCatch = function() {
         drawBucket(g.bucketX - 25, g.bucketY - 30);
     }
 
-    /* Setup Event Listeners for the Game */
+    /* Setup event listeners for the game */
     function addEventListeners() {
         canvas.addEventListener('mousemove', updateBucketPosition);
     }
