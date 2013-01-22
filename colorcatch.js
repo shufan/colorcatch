@@ -17,7 +17,7 @@ var colorCatch = function() {
         canvas.style.cursor = "none";
         // initial redraw
         redraw();
-        intId = setInterval(redraw(), 100);
+        intId = setInterval(redraw, 20);
         addEventListeners();
     }
 
@@ -53,10 +53,8 @@ var colorCatch = function() {
 
     function updateBucketPosition(evt) {
         var mousePosition = getMousePosition(evt);
-        g.bucketX = mousePosition.x;
-        g.bucketY = mousePosition.y;
-        drawBackground();
-        drawBucket(g.bucketX - 25, g.bucketY - 30);
+        g.bucketX = mousePosition.x - 25;
+        g.bucketY = mousePosition.y - 30;
     }
 
     /* Setup event listeners for the game */
