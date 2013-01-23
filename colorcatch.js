@@ -27,6 +27,7 @@ var colorCatch = function() {
     function redraw() {
         drawBackground();
         drawBucket(g.bucketX, g.bucketY);
+        drawAllSquares();
     }
 
     /* Update game state at a set interval */
