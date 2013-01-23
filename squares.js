@@ -17,7 +17,6 @@ function generateSquare() {
     g.squares.push(new Square(randomPos, 0, "yellow"));
 }
 
-
 function drawAllSquares() {
     g.squares.forEach(function(x){drawSquare(x)});
 }

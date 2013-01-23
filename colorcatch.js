@@ -21,6 +21,10 @@ var colorCatch = function() {
         redraw();
         intId = setInterval(redraw, 20);
         addEventListeners();
+		for (var i = 0; i < 10; i++) {
+			generateSquare();
+		}
+		console.log(g.squares[0]);
     }
 
     /* Redraw function on a set interval */
@@ -28,12 +32,17 @@ var colorCatch = function() {
         drawBackground();
         drawBucket(g.bucketX, g.bucketY);
         drawAllSquares();
+		update();
     }
 
     /* Update game state at a set interval */
     function update() {
         // code to update position of all boxes/generate
         // new boxes will be run here
+		for (var i = 0; i < g.squares.length; i++) {
+			g.squares[i].y += 5;
+			console.log(g.squares[i].x);
+		}
     }
 
     function drawBackground() {
