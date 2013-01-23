@@ -1,12 +1,12 @@
 /* Functions for bucket positioning and drawing */
-function Bucket(bucketX, bucketY) {
-	this.bucketX = bucketX;
-	this.bucketY = bucketY;
+function Bucket(x, y) {
+	this.x = x;
+	this.y = y;
 	this.bucketColors = ["white", "white", "white"];
 	
 	this.drawBucket = function() {
 		ctx.fillStyle = this.bucketColors[0];
-		ctx.fillRect(this.bucketX, this.bucketY, 50, 60);
+		ctx.fillRect(this.x, this.y, 50, 60);
 		/*ctx.fillStyle = "white";
 		ctx.fillRect(x, y, 50, 60);
 		ctx.fillStyle = "white";
@@ -17,8 +17,8 @@ function Bucket(bucketX, bucketY) {
 	
 function updateBucketPosition(evt, bucket) {
 	var mousePosition = getMousePosition(evt);
-	g.bucket.bucketX = mousePosition.x - 25;
-	g.bucket.bucketY = mousePosition.y - 30;
+	g.bucket.x = mousePosition.x - 25;
+	g.bucket.y = mousePosition.y - 30;
 }
 
 function getMousePosition(evt) {
