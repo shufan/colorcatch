@@ -1,38 +1,49 @@
+/* Canvas Global Variables */
+var canvas;
+var ctx;
+var intId;
+
+/* Game Global Variables */
+var g = {
+    bucketX: 400,
+    bucketY: 250,
+    squares: []
+};
+
 var colorCatch = function() {
-    var canvas;
-    var ctx;
 
-	// Constructor for a falling square
-	var square = function(x, y, width) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-	}
-
+    /* Initialize the game */
     this.init = function() {
 		canvas = document.getElementById("myCanvas");
     	ctx = canvas.getContext("2d");
-        drawBucket(200, 50);
-		dropSquare();
-	}
-	
-	function drawSquare() {
-		var sq = new square(10, 10, 10);
-		var rect = ctx.fillRect(sq.x, sq.y, sq.width, sq.width);
-	}
-	
-	function dropSquare() {
-		drawSquare();
-		ctx.save();
+        canvas.style.cursor = "none";
+        // initial redraw
+        redraw();
+        intId = setInterval(redraw, 20);
+        addEventListeners();
+    }
 
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		ctx.translate(200, 50);
-		drawSquare();
-		//setTimeout(dropSquare, 100);
-	}
+    /* Redraw function on a set interval */
+    function redraw() {
+        drawBackground();
+        drawBucket(g.bucketX, g.bucketY);
+        drawAllSquares();
+    }
 
-    function drawBucket(x,y) {
-        ctx.fillRect(x, y, 50, 60);
+    /* Update game state at a set interval */
+    function update() {
+        // code to update position of all boxes/generate
+        // new boxes will be run here
+    }
+
+    function drawBackground() {
+        ctx.fillStyle = "black";
+        ctx.fillRect(0,0, canvas.width, canvas.height);
+    }
+
+    /* Setup event listeners for the game */
+    function addEventListeners() {
+        canvas.addEventListener('mousemove', updateBucketPosition);
     }
 }
 
