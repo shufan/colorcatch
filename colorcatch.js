@@ -1,16 +1,38 @@
 var colorCatch = function() {
-	var g = {};
-	init = function() {
-		g.canvas = document.getElementById("myCanvas");
-    	g.ctx = g.canvas.getContext("2d");
+    var canvas;
+    var ctx;
+
+	// Constructor for a falling square
+	var square = function(x, y, width) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
 	}
 
-	g.drawSquare = function(x,y) {
-		
+    this.init = function() {
+		canvas = document.getElementById("myCanvas");
+    	ctx = canvas.getContext("2d");
+        drawBucket(200, 50);
+		dropSquare();
+	}
+	
+	function drawSquare() {
+		var sq = new square(10, 10, 10);
+		var rect = ctx.fillRect(sq.x, sq.y, sq.width, sq.width);
+	}
+	
+	function dropSquare() {
+		drawSquare();
+		ctx.save();
+
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.translate(200, 50);
+		drawSquare();
+		//setTimeout(dropSquare, 100);
 	}
 
-    g.drawBucket = function(x,y) {
-        g.ctx.fillRect(x, y, 50, 60);
+    function drawBucket(x,y) {
+        ctx.fillRect(x, y, 50, 60);
     }
 }
 
