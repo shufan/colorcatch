@@ -5,10 +5,9 @@ var intId;
 
 /* Game Global Variables */
 var g = {
-    bucketX: 400,
-    bucketY: 250,
+	bucket: {},
+	hp: 100,
     squares: [],
-	bucketColors: ["white", "white", "white"]
 };
 
 var colorCatch = function() {
@@ -18,21 +17,19 @@ var colorCatch = function() {
 		canvas = document.getElementById("myCanvas");
     	ctx = canvas.getContext("2d");
         canvas.style.cursor = "none";
+        g.bucket = new Bucket(400, 250);
         // initial redraw
         redraw();
         intId = setInterval(redraw, 20);
         addEventListeners();
-		for (var i = 0; i < 10; i++) {
-			generateSquare();
-		}
-		console.log(g.squares[0]);
     }
 
     /* Redraw function on a set interval */
     function redraw() {
         drawBackground();
-        drawBucket(g.bucketX, g.bucketY, bucketColors[0], bucketColors[1], bucketColrs[2]);
+		g.bucket.drawBucket();
         drawAllSquares();
+        drawHPBar();
 		update();
     }
 
@@ -40,10 +37,8 @@ var colorCatch = function() {
     function update() {
         // code to update position of all boxes/generate
         // new boxes will be run here
-		for (var i = 0; i < g.squares.length; i++) {
-			g.squares[i].y += 5;
-			console.log(g.squares[i].x);
-		}
+        updateAllSquares();
+        attemptSquareGeneration();
     }
 
     function drawBackground() {
