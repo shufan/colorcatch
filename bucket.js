@@ -13,7 +13,7 @@ function updateBucketPosition(evt) {
     g.bucketY = mousePosition.y - 30;
 }
 
-function drawBucket(x, y) {
+function drawBucket(x, y, bottomCol, middleCol, topCol) {
     ctx.fillStyle = "white";
     ctx.fillRect(x, y, 50, 60);
 }

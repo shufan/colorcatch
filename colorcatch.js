@@ -7,7 +7,8 @@ var intId;
 var g = {
     bucketX: 400,
     bucketY: 250,
-    squares: []
+    squares: [],
+	bucketColors: ["white", "white", "white"]
 };
 
 var colorCatch = function() {
@@ -30,7 +31,7 @@ var colorCatch = function() {
     /* Redraw function on a set interval */
     function redraw() {
         drawBackground();
-        drawBucket(g.bucketX, g.bucketY);
+        drawBucket(g.bucketX, g.bucketY, bucketColors[0], bucketColors[1], bucketColrs[2]);
         drawAllSquares();
 		update();
     }
