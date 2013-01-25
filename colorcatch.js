@@ -8,6 +8,8 @@ var g = {
 	bucket: {},
 	hp: 100,
     squares: [],
+    // possible colors for squres
+    squareColors: ["blue", "red", "white", "green"]
 };
 
 var colorCatch = function() {

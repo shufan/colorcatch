@@ -56,10 +56,11 @@ function Square(x, y, color) {
 }
 
 function generateSquare() {
-    // generate random horizontal position for square
+    // generate random horizontal position and color for square
     var randomPos = Math.random()*780+10;
+    var randomColor = Math.floor(Math.random()*(g.squareColors.length));
     // change 0 to -10 when ready
-    g.squares.push(new Square(randomPos, 0, "yellow"));
+    g.squares.push(new Square(randomPos, 0, g.squareColors[randomColor]));
 }
 
 function attemptSquareGeneration() {
@@ -82,19 +83,21 @@ function updateAllSquares() {
     for (var i = 0; i < g.squares.length; i++) {
         g.squares[i].y += 5;
         // if square uncatchable, see if it is now catchable
-        if(g.squares[i].catchable === false) {
+        if(!g.squares[i].catchable) {
             if(g.squares[i].isolated() === true) {
                 g.squares[i].catchable = true;
             }
         } else {
             // square is catchable, see if it is caught
-            if(g.squares[i].caught() === true) {
+            if(g.squares[i].caught()) {
+                // update bucket colors
+                g.bucket.captureColor(g.squares[i]);
                 g.squares.splice(i,1);
                 i--;
                 continue;
             }
             // see if square hit side and should be marked uncatchable
-            if(g.squares[i].hitSideOfBucket() === true) {
+            if(g.squares[i].hitSideOfBucket()) {
                 g.squares[i].catchable = false;
             }
         }
