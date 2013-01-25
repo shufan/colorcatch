@@ -91,7 +91,9 @@ function updateAllSquares() {
             // square is catchable, see if it is caught
             if(g.squares[i].caught()) {
                 // update bucket colors
-                g.bucket.captureColor(g.squares[i]);
+                if(g.catching) {
+                    g.bucket.captureColor(g.squares[i]);
+                }
                 g.squares.splice(i,1);
                 i--;
                 continue;
