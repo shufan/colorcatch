@@ -8,6 +8,7 @@ var g = {
 	bucket: {},
 	hp: 100,
     squares: [],
+	intId: 0,
 };
 
 var colorCatch = function() {
@@ -26,11 +27,17 @@ var colorCatch = function() {
 
     /* Redraw function on a set interval */
     function redraw() {
-        drawBackground();
-		g.bucket.drawBucket();
-        drawAllSquares();
-        drawHPBar();
-		update();
+		if (g.hp > 0) {
+			drawBackground();
+			g.bucket.drawBucket();
+			drawAllSquares();
+			drawHPBar();
+			update();
+		}
+		else {
+			clearInterval(intId);
+			drawBackground();
+		}
     }
 
     /* Update game state at a set interval */

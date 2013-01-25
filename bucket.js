@@ -2,15 +2,15 @@
 function Bucket(bucketX, bucketY) {
 	this.bucketX = bucketX;
 	this.bucketY = bucketY;
-	this.bucketColors = ["white", "white", "white"];
+	this.bucketColors = ["white", "yellow", "green"];
 	
 	this.drawBucket = function() {
+		ctx.fillStyle = this.bucketColors[2];
+		ctx.fillRect(this.bucketX, this.bucketY, 50, 20);
+		ctx.fillStyle = this.bucketColors[1];
+		ctx.fillRect(this.bucketX, this.bucketY+20, 50, 20);
 		ctx.fillStyle = this.bucketColors[0];
-		ctx.fillRect(this.bucketX, this.bucketY, 50, 60);
-		/*ctx.fillStyle = "white";
-		ctx.fillRect(x, y, 50, 60);
-		ctx.fillStyle = "white";
-		ctx.fillRect(x, y, 50, 60);*/
+		ctx.fillRect(this.bucketX, this.bucketY+40, 50, 20);
 	}
 	
 }
