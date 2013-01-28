@@ -7,7 +7,10 @@ function Square(x, y, color) {
     
     this.drawSquare = function() {
         ctx.fillStyle = this.color;
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = g.squareStrokes[this.color];
         ctx.fillRect(this.x-10, this.y-10, 20, 20);
+        ctx.strokeRect(this.x-10, this.y-10, 20, 20);
     }
 
     this.hitSideOfBucket = function() {

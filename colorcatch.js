@@ -11,14 +11,19 @@ var g = {
 	hp: 100,
     squares: [],
     // possible colors for squares
-    squareColors: ["blue", "red", "yellow"],
+    squareColors: ["99CCFF", "FF9999", "FFFF99"],
+    squareStrokes: {
+        "99CCFF": "0080FF",
+        "FF9999": "F22A2A",
+        "FFFF99": "FDFD46"
+    },
     keyCodes: {
         "17": "catch"
     },
     // possible spell combinations
     spells: {
         // freeze blocks for 5 seconds
-        "blue,blue,blue": freeze = function() {
+        "99CCFF,99CCFF,99CCFF": freeze = function() {
             g.pauseCounter = 250;
         }
     }
@@ -56,7 +61,7 @@ var colorCatch = function() {
     }
 
     function drawBackground() {
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "202020";
         ctx.fillRect(0,0, canvas.width, canvas.height);
     }
 

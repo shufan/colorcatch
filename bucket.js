@@ -16,18 +16,24 @@ function Bucket(x, y) {
 
 	this.drawBucket = function() {
         // draw bucket
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = "FFFFFF";
+        ctx.lineWidth = 3;
         ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(this.x, this.y+60);
-        ctx.lineTo(this.x+50, this.y+60);
-        ctx.lineTo(this.x+50, this.y);
+        ctx.moveTo(this.x,this.y);
+        ctx.lineTo(this.x,this.y+60-5);
+        ctx.quadraticCurveTo(this.x,this.y+60,this.x+5,this.y+60);
+        ctx.lineTo(this.x+50-5,this.y+60);
+        ctx.quadraticCurveTo(this.x+50,this.y+60,this.x+50,this.y+60-5);
+        ctx.lineTo(this.x+50,this.y);
         ctx.stroke();
-
         // draw bucket colors
         for(var i = 0; i < this.bucketColors.length; i++) {
             ctx.fillStyle = this.bucketColors[i];
-            ctx.fillRect(this.x, this.y+60-20*(i+1), 50, 20);
+            if(i == 0) {
+                ctx.fillRect(this.x+1.5, this.y+60-20*(i+1), 47, 18.5);
+            } else {
+                ctx.fillRect(this.x+1.5, this.y+60-20*(i+1), 47, 20);
+            }
         }
 	}	
 }
