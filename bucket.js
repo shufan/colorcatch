@@ -25,23 +25,27 @@ function Bucket(x, y) {
         ctx.stroke();
 
         // draw bucket colors
-        for(var i = 0; i < this.bucketColors.length; i ++) {
+        for(var i = 0; i < this.bucketColors.length; i++) {
             ctx.fillStyle = this.bucketColors[i];
             ctx.fillRect(this.x, this.y+60-20*(i+1), 50, 20);
         }
 	}	
 }
 	
-function updateBucketPosition(evt, bucket) {
+function updateBucketPosition(evt) {
 	var mousePosition = getMousePosition(evt);
 	g.bucket.x = mousePosition.x - 25;
 	g.bucket.y = mousePosition.y - 30;
 }
 
-function getMousePosition(evt) {
-	var rect = canvas.getBoundingClientRect();
-	return {
-		x: evt.clientX - rect.left,
-		y: evt.clientY - rect.top
-	};
+function castSpell(evt) {
+    var mousePosition = getMousePosition(evt);
+    var spell = g.spells[g.bucket.bucketColors.join()];
+    if(spell !== undefined) {
+        for(var i = 0; i < 3; i++) {
+            g.bucket.bucketColors.pop();
+        }
+        spell();
+    }
+    
 }

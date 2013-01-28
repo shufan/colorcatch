@@ -67,6 +67,9 @@ function attemptSquareGeneration() {
     // generate random number to determine how many squares
     var randomNum = Math.random()*100;
     var numGenerated = 0;
+    if(g.pauseCounter > 0) {
+        return;
+    }
     if(randomNum > 95) {
         numGenerated = 1;
     }
@@ -81,10 +84,12 @@ function drawAllSquares() {
 
 function updateAllSquares() {
     for (var i = 0; i < g.squares.length; i++) {
-        g.squares[i].y += 5;
+        if(g.pauseCounter == 0) {
+            g.squares[i].y += 5;
+        }
         // if square uncatchable, see if it is now catchable
         if(!g.squares[i].catchable) {
-            if(g.squares[i].isolated() === true) {
+            if(g.squares[i].isolated()) {
                 g.squares[i].catchable = true;
             }
         } else {
@@ -109,4 +114,8 @@ function updateAllSquares() {
             g.hp--;
         }
     }
+    if(g.pauseCounter > 0) {
+        g.pauseCounter--;
+    }
+
 }

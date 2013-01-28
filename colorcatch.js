@@ -5,14 +5,22 @@ var intId;
 
 /* Game Global Variables */
 var g = {
+    pauseCounter: 0,
     catching: false,
 	bucket: {},
 	hp: 100,
     squares: [],
-    // possible colors for squres
-    squareColors: ["blue", "red", "white", "green"],
+    // possible colors for squares
+    squareColors: ["blue", "red", "yellow"],
     keyCodes: {
         "17": "catch"
+    },
+    // possible spell combinations
+    spells: {
+        // freeze blocks for 5 seconds
+        "blue,blue,blue": freeze = function() {
+            g.pauseCounter = 250;
+        }
     }
 };
 
@@ -43,10 +51,8 @@ var colorCatch = function() {
 
     /* Update game state at a set interval */
     function update() {
-        // code to update position of all boxes/generate
-        // new boxes will be run here
         updateAllSquares();
-        attemptSquareGeneration();
+        attemptSquareGeneration(); 
     }
 
     function drawBackground() {
@@ -57,6 +63,7 @@ var colorCatch = function() {
     /* Setup event listeners for the game */
     function addEventListeners() {
         canvas.addEventListener('mousemove', updateBucketPosition);
+        canvas.addEventListener('click', castSpell);
         canvas.addEventListener('keydown', onKeyDown, false);
         canvas.addEventListener('keyup', onKeyUp, false);
     }
