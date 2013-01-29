@@ -5,7 +5,7 @@ var intId;
 
 /* Game Global Variables */
 var g = {
-    pauseCounter: 0,
+    freezeCounter: 0,
     catching: false,
 	bucket: {},
 	hp: 100,
@@ -24,9 +24,10 @@ var g = {
     spells: {
         // freeze blocks for 5 seconds
         "99CCFF,99CCFF,99CCFF": freeze = function() {
-            g.pauseCounter = 250;
+            g.freezeCounter = 250;
         }
-    }
+    },
+    snowflakes: []
 };
 
 var colorCatch = function() {
@@ -48,6 +49,13 @@ var colorCatch = function() {
     /* Redraw function on a set interval */
     function redraw() {
         drawBackground();
+        if(g.freezeCounter > 0) {
+            // snow during freeze spell
+            generateSnowFlake();
+            drawAllSnowFlakes();
+        } else if(g.freezeCounter == 1) {
+            clearSnow();
+        }
 		g.bucket.drawBucket();
         drawAllSquares();
         drawHPBar();
@@ -57,6 +65,8 @@ var colorCatch = function() {
     /* Update game state at a set interval */
     function update() {
         updateAllSquares();
+        updateAllSnowFlakes();
+        attemptSnowFlakeGeneration();
         attemptSquareGeneration(); 
     }
 
