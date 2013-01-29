@@ -14,13 +14,14 @@ function Snowflake(x, y, size, transparency) {
 }
 
 function generateSnowFlake() {
+	// generate random horizontal position for snowflake
 	var randomPosX = Math.random()*800;
 	var randomSize = Math.random()*2+3;
 	// taper snow transparency near end of spell
 	if(g.freezeCounter < 100) {
 		g.snowflakes.push(new Snowflake(randomPosX, 0, randomSize, 0));
 	} else if(g.freezeCounter <= 150) {
-		g.snowflakes.push(new Snowflake(randomPosX, 0, randomSize, g.freezeCounter/150));
+		g.snowflakes.push(new Snowflake(randomPosX, 0, randomSize, (g.freezeCounter-25)/150));
 	} else {
 		g.snowflakes.push(new Snowflake(randomPosX, 0, randomSize, 1));
 	}
@@ -53,7 +54,7 @@ function drawAllSnowFlakes() {
 	});
 }
 
-function updateAllSnowFlakes(x, y, size) {
+function updateAllSnowFlakes() {
 	for(var i = 0; i < g.snowflakes.length; i++) {
 		if(g.snowflakes[i].y >= 500) {
 			g.snowflakes.splice(i,1);
