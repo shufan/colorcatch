@@ -112,21 +112,15 @@ var colorCatch = function() {
 		var bucketColors = g.bucket.bucketColors.join();
 		if (bucketColors === "FFFF99,FFFF99,FFFF99") {
 			img.src = "img/lightning.png";
-			img.onload = function() {
-				ctx.drawImage(img, 732, 25);
-			}
+            ctx.drawImage(img, 732, 25);
 		}
 		else if (bucketColors === "99CCFF,99CCFF,99CCFF") {
 			img.src = "img/snowicon.png";
-			img.onload = function() {
-				ctx.drawImage(img, 705, 25);
-			}
+			ctx.drawImage(img, 705, 25);
 		}
 		else if (bucketColors === "FF9999,FF9999,FF9999") {
 			img.src = "img/meteor1.png";
-			img.onload = function() {
-				ctx.drawImage(img, 680, 20);
-			}
+            ctx.drawImage(img, 680, 20);
 		}
 	}
 
@@ -134,6 +128,7 @@ var colorCatch = function() {
     function redraw() {
 		if (g.hp > 0) {
             drawBackground();
+            drawSpellIcon();            
             drawAllExplosions();
             drawAllSnowFlakes();
             drawAllSquares();
