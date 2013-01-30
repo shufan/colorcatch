@@ -5,7 +5,8 @@ var intId;
 
 /* Game Global Variables */
 var g = {
-    freezeCounter: 0,
+    freezeCounter: -1,
+    lightningCounter: -1,
     catching: false,
 	bucket: {},
 	hp: 100,
@@ -25,12 +26,24 @@ var g = {
         // freeze blocks for 5 seconds
         "99CCFF,99CCFF,99CCFF": freeze = function() {
             g.freezeCounter = 250;
+        },
+        // shoots meteors across the screen
+        "FF9999,FF9999,FF9999": meteorshower = function() {
+            generateMeteorShower();
+        },
+        // shoots lightning bolts upwards from bucket
+        "FFFF99,FFFF99,FFFF99": lightning = function() {
+            g.lightningCounter = 250;
+            generateLightning();
         }
     },
 	score : 0,
 	highScores: [{name: "N/A", score: 0}, {name: "N/A", score: 0}, 
 					{name: "N/A", score: 0}, {name: "N/A", score: 0}, {name: "N/A", score: 0}],
     snowflakes: [],
+	meteors: [],
+    lightning: [],
+    lightningId: undefined,
 	firstplay: true,
 };
 
@@ -88,15 +101,11 @@ var colorCatch = function() {
     function redraw() {
 		if (g.hp > 0) {
 			drawBackground();
-			if(g.freezeCounter > 0) {
-				// snow during freeze spell
-				generateSnowFlake();
-				drawAllSnowFlakes();
-			} else if(g.freezeCounter == 1) {
-				clearSnow();
-			}
-			g.bucket.drawBucket();
+			drawAllSnowFlakes();
 			drawAllSquares();
+        	drawAllMeteors();
+       		drawAllLightning();
+			g.bucket.drawBucket();
 			drawHPBar();
 			update();
 		}
@@ -113,8 +122,19 @@ var colorCatch = function() {
         updateAllSquares();
 		updateScore();
         updateAllSnowFlakes();
-        attemptSnowFlakeGeneration();
-        attemptSquareGeneration(); 
+        updateAllMeteors();
+        updateAllLightning();
+        attemptSquareGeneration();
+        if(g.freezeCounter >= 0) {
+            attemptSnowFlakeGeneration();
+            g.freezeCounter--;
+        } 
+        if(g.lightningCounter >= 0) {
+            g.lightningCounter--;
+        }
+        if(g.lightningCounter == 0) {
+            clearInterval(g.lightningId);
+        }
     }
 
     function drawBackground() {
