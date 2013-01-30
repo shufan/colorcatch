@@ -7,7 +7,10 @@ function Square(x, y, color) {
     
     this.drawSquare = function() {
         ctx.fillStyle = this.color;
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = g.squareStrokes[this.color];
         ctx.fillRect(this.x-10, this.y-10, 20, 20);
+        ctx.strokeRect(this.x-10, this.y-10, 20, 20);
     }
 
     this.hitSideOfBucket = function() {
@@ -67,10 +70,10 @@ function attemptSquareGeneration() {
     // generate random number to determine how many squares
     var randomNum = Math.random()*100;
     var numGenerated = 0;
-    if(g.pauseCounter > 0) {
+    if(g.freezeCounter > 0) {
         return;
     }
-    if(randomNum > 95) {
+    if(randomNum > 30) {
         numGenerated = 1;
     }
     for(var i = 0; i < numGenerated; i++) {
@@ -84,38 +87,38 @@ function drawAllSquares() {
 
 function updateAllSquares() {
     for (var i = 0; i < g.squares.length; i++) {
-        if(g.pauseCounter == 0) {
-            g.squares[i].y += 5;
-        }
-        // if square uncatchable, see if it is now catchable
-        if(!g.squares[i].catchable) {
-            if(g.squares[i].isolated()) {
-                g.squares[i].catchable = true;
-            }
-        } else {
-            // square is catchable, see if it is caught
-            if(g.squares[i].caught()) {
-                // update bucket colors
-                if(g.catching) {
-                    g.bucket.captureColor(g.squares[i]);
-                }
-                g.squares.splice(i,1);
-                i--;
-                continue;
-            }
-            // see if square hit side and should be marked uncatchable
-            if(g.squares[i].hitSideOfBucket()) {
-                g.squares[i].catchable = false;
-            }
-        }
         if(g.squares[i].y >= 495) {
             g.squares.splice(i,1);
             i--;
             g.hp--;
+        } else {
+            if(g.freezeCounter == 0) {
+                g.squares[i].y += 5;
+            }
+            // if square uncatchable, see if it is now catchable
+            if(!g.squares[i].catchable) {
+                if(g.squares[i].isolated()) {
+                    g.squares[i].catchable = true;
+                }
+            } else {
+                // square is catchable, see if it is caught
+                if(g.squares[i].caught()) {
+                    // update bucket colors
+                    if(g.catching) {
+                        g.bucket.captureColor(g.squares[i]);
+                    }
+                    g.squares.splice(i,1);
+                    i--;
+                    continue;
+                }
+                // see if square hit side and should be marked uncatchable
+                if(g.squares[i].hitSideOfBucket()) {
+                    g.squares[i].catchable = false;
+                }
+            }
         }
     }
-    if(g.pauseCounter > 0) {
-        g.pauseCounter--;
+    if(g.freezeCounter > 0) {
+        g.freezeCounter--;
     }
-
 }

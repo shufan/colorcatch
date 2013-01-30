@@ -5,26 +5,33 @@ var intId;
 
 /* Game Global Variables */
 var g = {
-    pauseCounter: 0,
+    freezeCounter: 0,
     catching: false,
 	bucket: {},
 	hp: 100,
     squares: [],
     // possible colors for squares
-    squareColors: ["blue", "red", "yellow"],
+    squareColors: ["99CCFF", "FF9999", "FFFF99"],
+    squareStrokes: {
+        "99CCFF": "0080FF",
+        "FF9999": "F22A2A",
+        "FFFF99": "FDFD46"
+    },
     keyCodes: {
         "17": "catch"
     },
     // possible spell combinations
     spells: {
         // freeze blocks for 5 seconds
-        "blue,blue,blue": freeze = function() {
-            g.pauseCounter = 250;
+        "99CCFF,99CCFF,99CCFF": freeze = function() {
+            g.freezeCounter = 250;
         }
     },
 	score : 0,
 	highScores: [{name: "N/A", score: 0}, {name: "N/A", score: 0}, 
 					{name: "N/A", score: 0}, {name: "N/A", score: 0}, {name: "N/A", score: 0}],
+    snowflakes: [],
+	firstplay: true,
 };
 
 var colorCatch = function() {
@@ -36,18 +43,58 @@ var colorCatch = function() {
         canvas.style.cursor = "none";
         canvas.setAttribute('tabindex','0');
         canvas.focus();
+		if (g.firstplay) {
+			var img = new Image();
+			img.src = "colorcatchbg.jpg";
+			img.onload = function() {
+				ctx.drawImage(img, 0, 0);
+			}
+			g.firstplay = false;
+		}
+		else {
+			document.removeEventListener("click", colorCatchGame.init);
+			colorCatchGame.resetGlobals();
+			colorCatchGame.begin();
+		}
         g.bucket = new Bucket(400, 250);
-        // initial redraw
+    }
+	
+	this.resetGlobals = function() {
+		g.freezeCounter = 0;
+		g.catching = false;
+		g.hp = 100;
+		g.squares = [];
+		// possible spell combinations
+		g.spells = {
+			// freeze blocks for 5 seconds
+			"99CCFF,99CCFF,99CCFF": freeze = function() {
+				g.freezeCounter = 250;
+			}
+		},
+		g.score = 0;
+		g.snowflakes = [];
+	}
+	
+	this.begin = function() {
+		document.removeEventListener("click", colorCatchGame.begin);
+		// initial redraw
         redraw();
         intId = setInterval(redraw, 20);
 		intId2 = setInterval(function() {g.score++}, 1000);
         addEventListeners();
-    }
+	}
 
     /* Redraw function on a set interval */
     function redraw() {
 		if (g.hp > 0) {
 			drawBackground();
+			if(g.freezeCounter > 0) {
+				// snow during freeze spell
+				generateSnowFlake();
+				drawAllSnowFlakes();
+			} else if(g.freezeCounter == 1) {
+				clearSnow();
+			}
 			g.bucket.drawBucket();
 			drawAllSquares();
 			drawHPBar();
@@ -55,49 +102,23 @@ var colorCatch = function() {
 		}
 		else {
 			clearInterval(intId);
+			clearInterval(intId2);
+			calcHighScores();
 			showHighScores();
 		}
     }
 
-	function showHighScores() {
-		drawBackground();
-		var length = g.highScores.length;
-		var playerName = prompt("Please enter your name.", "Anonymous");
-		for (var i = 0; i < length; i++) {
-			if (g.score >= g.highScores[i].score) {
-				g.highScores.splice(i, 0, {name: playerName, score: g.score});
-				// Shrink highScores length back to original in case it grew
-				g.highScores.splice(length);
-				break;
-			}
-		}
-		ctx.fillStyle = "Yellow";
-		ctx.font = 'bold 30px sans-serif underline';
-		ctx.fillText("High Scores", 25, 30);
-		ctx.fillStyle = "green";
-		ctx.font = 'bold 20px sans-serif';
-		var yCoord = 100;
-		for (var j = 1; j <= g.highScores.length; j++) {
-			ctx.fillText(j + ": " + g.highScores[j-1].name + " | " + g.score, 25, yCoord);
-			yCoord += 70;
-		}
-	}
-
     /* Update game state at a set interval */
     function update() {
         updateAllSquares();
-        attemptSquareGeneration();
 		updateScore();
+        updateAllSnowFlakes();
+        attemptSnowFlakeGeneration();
+        attemptSquareGeneration(); 
     }
 
-	function updateScore() {
-		ctx.fillStyle = "green";
-		ctx.font = 'italic bold 30px sans-serif';
-		ctx.fillText('[Score: '+g.score+']', 25, 50);
-	}
-
     function drawBackground() {
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "202020";
         ctx.fillRect(0,0, canvas.width, canvas.height);
     }
 
@@ -135,5 +156,5 @@ function getMousePosition(evt) {
 
 var colorCatchGame = new colorCatch();
 canvas = document.getElementById("myCanvas");
-document.addEventListener('click', colorCatchGame.init());
-//colorCatchGame.init();
+colorCatchGame.init();
+document.addEventListener('click', colorCatchGame.begin);
