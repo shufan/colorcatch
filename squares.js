@@ -98,7 +98,7 @@ function attemptSquareGeneration() {
     if(g.freezeCounter > 0) {
         return;
     }
-    if(randomNum > 30) {
+    if(randomNum > 95) {
         numGenerated = 1;
     }
     for(var i = 0; i < numGenerated; i++) {

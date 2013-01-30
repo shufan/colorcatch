@@ -54,5 +54,4 @@ function castSpell(evt) {
         }
         spell();
     }
-    
 }

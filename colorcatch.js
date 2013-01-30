@@ -97,6 +97,29 @@ var colorCatch = function() {
         addEventListeners();
 	}
 
+	function drawSpellIcon() {
+		var img = new Image();
+		var bucketColors = g.bucket.bucketColors.join();
+		if (bucketColors === "FFFF99,FFFF99,FFFF99") {
+			img.src = "img/lightning.png";
+			img.onload = function() {
+				ctx.drawImage(img, 732, 25);
+			}
+		}
+		else if (bucketColors === "99CCFF,99CCFF,99CCFF") {
+			img.src = "img/snowicon.png";
+			img.onload = function() {
+				ctx.drawImage(img, 705, 25);
+			}
+		}
+		else if (bucketColors === "FF9999,FF9999,FF9999") {
+			img.src = "img/meteor1.png";
+			img.onload = function() {
+				ctx.drawImage(img, 680, 20);
+			}
+		}
+	}
+
     /* Redraw function on a set interval */
     function redraw() {
 		if (g.hp > 0) {
@@ -105,6 +128,7 @@ var colorCatch = function() {
 			drawAllSquares();
         	drawAllMeteors();
        		drawAllLightning();
+			drawSpellIcon();
 			g.bucket.drawBucket();
 			drawHPBar();
 			update();
