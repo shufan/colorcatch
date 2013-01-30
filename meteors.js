@@ -26,9 +26,14 @@ function generateMeteor() {
 }
 
 function generateMeteorShower() {
-	// generate a shower of multiple meteors
-	for(var i = 0; i < 10; i ++) {
-		generateMeteor();
+	if(g.meteorCounter == 0) {
+		clearInterval(g.meteorId);
+	} else {
+		// generate a shower of multiple meteors
+		for(var i = 0; i < 8; i ++) {
+			generateMeteor();
+		}
+		g.meteorCounter--;
 	}
 }
 

@@ -7,6 +7,7 @@ var intId;
 var g = {
     freezeCounter: -1,
     lightningCounter: -1,
+    meteorCounter: 0,
     catching: false,
 	bucket: {},
 	hp: 100,
@@ -38,7 +39,9 @@ var g = {
         },
         // shoots meteors across the screen
         "FF9999,FF9999,FF9999": meteorshower = function() {
+            g.meteorCounter = 3;
             generateMeteorShower();
+            g.meteorId = setInterval(generateMeteorShower, 1000);
         },
         // shoots lightning bolts upwards from bucket
         "FFFF99,FFFF99,FFFF99": lightning = function() {
@@ -54,6 +57,7 @@ var g = {
     lightning: [],
     explosions: [],
     lightningId: undefined,
+    meteorId: undefined,
 	firstplay: true
 };
 
@@ -83,7 +87,8 @@ var colorCatch = function() {
     }
 	
 	this.resetGlobals = function() {
-		g.freezeCounter = 0;
+		g.freezeCounter = -1;
+        g.lightningCounter = -1;
 		g.catching = false;
 		g.hp = 100;
 		g.squares = [];
@@ -96,6 +101,10 @@ var colorCatch = function() {
 		},
 		g.score = 0;
 		g.snowflakes = [];
+        g.meteors = [];
+        g.lightning = [];
+        g.explosions = [];
+        g.meteorCounter = 0;
 	}
 	
 	this.begin = function() {
