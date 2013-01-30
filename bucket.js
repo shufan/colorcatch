@@ -27,6 +27,10 @@ function Bucket(x, y) {
         ctx.quadraticCurveTo(this.x+50,this.y+60,this.x+50,this.y+60-5);
         ctx.lineTo(this.x+50,this.y);
         ctx.stroke();
+        ctx.fillStyle = "FFFFFF";
+        ctx.globalAlpha = ".2";
+        ctx.fillRect(this.x+1.5,this.y, 47, 58.5);
+        ctx.globalAlpha = "1";
         // draw bucket colors
         for(var i = 0; i < this.bucketColors.length; i++) {
             ctx.fillStyle = this.bucketColors[i];
