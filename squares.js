@@ -1,8 +1,9 @@
 /* Functions for generating and drawing squares here */
-function Square(x, y, color) {
+function Square(x, y, color, speed) {
     this.x = x;
     this.y = y;
     this.color = color;
+    this.speed = speed;
     this.catchable = true;
     
     this.drawSquare = function() {
@@ -10,7 +11,11 @@ function Square(x, y, color) {
         ctx.lineWidth = 1;
         ctx.strokeStyle = g.squareStrokes[this.color];
         ctx.fillRect(-10, -10, 20, 20);
-        ctx.strokeRect(-10, -10, 20, 20);
+    }
+
+    this.explode = function() {
+        var explosion = new Explosion(this.x, this.y, this.color);
+        g.explosions.push(explosion);
     }
 
     this.hitMeteor = function() {
@@ -83,12 +88,13 @@ function Square(x, y, color) {
     }
 }
 
-function generateSquare() {
+function generateSquare(speed) {
     // generate random horizontal position and color for square
     var randomPosX = Math.random()*780+10;
     var randomColor = Math.floor(Math.random()*(g.squareColors.length));
+    var randomSpeed = Math.floor(Math.random()*3+speed);
     // change 0 to -10 when ready
-    g.squares.push(new Square(randomPosX, 0, g.squareColors[randomColor]));
+    g.squares.push(new Square(randomPosX, 0, g.squareColors[randomColor], randomSpeed));
 }
 
 function attemptSquareGeneration() {
@@ -98,20 +104,38 @@ function attemptSquareGeneration() {
     if(g.freezeCounter > 0) {
         return;
     }
-    if(randomNum > 95) {
-        numGenerated = 1;
-    }
-    for(var i = 0; i < numGenerated; i++) {
-        generateSquare();
+    if(g.score < 10) {
+        if(randomNum > g.levels["easy"][1]) {
+            generateSquare(g.levels["easy"][0]);
+        }
+    } else if(g.score < 30) {
+        if(randomNum > g.levels["medium"][1]) {
+            generateSquare(g.levels["medium"][0]);
+        }
+    } else {
+        if(randomNum > g.levels["hard"][1]) {
+            generateSquare(g.levels["hard"][0]);
+        }
     }
 } 
 
 function drawAllSquares() {
     g.squares.forEach(function(x){
-        ctx.save();
-        ctx.translate(x.x, x.y);
-        x.drawSquare();
-        ctx.restore();
+        // draw with fading trail
+        for(var i = 0; i <= 100; i+=1) {
+            if(i == 100) {
+                ctx.save();
+                ctx.globalAlpha = 1
+                ctx.translate(x.x, x.y);
+                x.drawSquare();
+                ctx.restore();
+            }
+            ctx.save();
+            ctx.globalAlpha = (Math.pow(i,3)/(10000000))
+            ctx.translate(x.x, x.y-100+i);
+            x.drawSquare();
+            ctx.restore();
+        }
     });
 }
 
@@ -120,19 +144,21 @@ function updateAllSquares() {
         if(g.squares[i].y >= 495) {
             g.squares.splice(i,1);
             i--;
-            g.hp--;
+            g.hp-=1;
         } else {
             if(g.freezeCounter == -1) {
-                g.squares[i].y += 5;
+                g.squares[i].y += g.squares[i].speed;
             }
             // if square hit by meteor, it is destroyed
             if(g.squares[i].hitMeteor()) {
+                g.squares[i].explode();
                 g.squares.splice(i,1);
                 i--;
                 continue;
             }
             // if square hit by lightning, it is destroyed
             if(g.squares[i].hitLightning()) {
+                g.squares[i].explode();
                 g.squares.splice(i,1);
                 i--;
                 continue;

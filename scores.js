@@ -1,7 +1,7 @@
 /* Functinos related to scoring and high scores */
 
-function updateScore() {
-	ctx.fillStyle = "#FDFD46";
+function drawScore() {
+	ctx.fillStyle = "FFFFFF";
 	ctx.font = "bold 30px Calibri";
 	ctx.textAlign = "left";
 	ctx.fillText("[Score: "+g.score+"]", 25, 50);
@@ -32,17 +32,17 @@ function showHighScores() {
 	
 	ctx.textAlign = "center";
 	ctx.globalAlpha = 1.0;
-	ctx.fillStyle = "#0080FF";
+	ctx.fillStyle = "black";
 	ctx.font = 'bold 30px Calibri';
 	ctx.fillText("High Scores",410, 115);
-	ctx.fillStyle = "#FDFD46";
+	ctx.fillStyle = "FFFFFF";
 	ctx.font = 'bold 20px Calibri';
 	var yCoord = 180;
 	for (var j = 0; j < length; j++) {
 		ctx.fillText(j+1 + ": " + g.highScores[j].name + " | " + g.highScores[j].score, 410, yCoord);
 		yCoord += 45;
 	}
-	ctx.fillStyle = "#F22A2A";
+	ctx.fillStyle = "black";
 	ctx.fillText("Click anywhere to play a new game", 410, 417);
 	document.addEventListener("click", colorCatchGame.init);
 }

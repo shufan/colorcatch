@@ -21,6 +21,15 @@ var g = {
     keyCodes: {
         "17": "catch"
     },
+    // levels of difficulty
+    levels: {
+        // easy: speed range (2-5), generation threshold (97)
+        "easy": [2,97],
+        // medium: speed range (3-6), generation threshold (95)
+        "medium": [3,95],
+        // hard: speed range (5-8), generation threshold (90)
+        "hard": [5,90]  
+    },
     // possible spell combinations
     spells: {
         // freeze blocks for 5 seconds
@@ -43,8 +52,9 @@ var g = {
     snowflakes: [],
 	meteors: [],
     lightning: [],
+    explosions: [],
     lightningId: undefined,
-	firstplay: true,
+	firstplay: true
 };
 
 var colorCatch = function() {
@@ -58,7 +68,7 @@ var colorCatch = function() {
         canvas.focus();
 		if (g.firstplay) {
 			var img = new Image();
-			img.src = "colorcatchbg.jpg";
+			img.src = "img/colorcatchbg.jpg";
 			img.onload = function() {
 				ctx.drawImage(img, 0, 0);
 			}
@@ -93,7 +103,7 @@ var colorCatch = function() {
 		// initial redraw
         redraw();
         intId = setInterval(redraw, 20);
-		intId2 = setInterval(function() {g.score++}, 1000);
+		scoreId = setInterval(function() {g.score++}, 1000);
         addEventListeners();
 	}
 
@@ -123,28 +133,30 @@ var colorCatch = function() {
     /* Redraw function on a set interval */
     function redraw() {
 		if (g.hp > 0) {
-			drawBackground();
-			drawAllSnowFlakes();
-			drawAllSquares();
-        	drawAllMeteors();
-       		drawAllLightning();
-			drawSpellIcon();
-			g.bucket.drawBucket();
-			drawHPBar();
-			update();
-		}
-		else {
+            drawBackground();
+            drawAllExplosions();
+            drawAllSnowFlakes();
+            drawAllSquares();
+            drawAllMeteors();
+            drawAllLightning();
+            g.bucket.drawBucket();
+            drawScore();
+            drawHPBar();
+            update();
+		} else {
 			clearInterval(intId);
-			clearInterval(intId2);
-			calcHighScores();
+			clearInterval(scoreId);
+            ctx.fillStyle = "202020"
+            ctx.fillRect(0,480,10,20);			
+            calcHighScores();
 			showHighScores();
-		}
+		}        
     }
 
     /* Update game state at a set interval */
     function update() {
         updateAllSquares();
-		updateScore();
+        updateAllExplosions();
         updateAllSnowFlakes();
         updateAllMeteors();
         updateAllLightning();
